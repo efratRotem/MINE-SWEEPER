@@ -3,6 +3,8 @@
 const MINE = '💣'
 const EMPTY = ' '
 
+
+var gShownCount
 var gBoard = []
 var gGame = {
     isOn: true,
@@ -10,14 +12,14 @@ var gGame = {
     markedCount: 0,
     secsPassed: 0
 }
-var gNextId = 101
+var gTimeDiff
 
 
 // console.log('gGame', gGame);
 
 function init() {
     gGame.isOn = true
-    gBoard = createBoard(4, 4)
+    gBoard = buildBoard(4, 4)
     renderBoard(gBoard)
     setMinesNegsCount(gBoard)
 
@@ -36,27 +38,34 @@ function init() {
 // console.log('gBoard:', gBoard);
 
 
-function createBoard(ROWS = 4, COLS = 4) {
+function buildBoard(ROWS = 4, COLS = 4) {
     var board = []
     for (var i = 0; i < ROWS; i++) {
         var row = []
         for (var j = 0; j < COLS; j++) {
 
             var cell = {
-                id: gNextId++,
                 minesAroundCount: mineCountAround(gBoard, i, j), //should be a function (setMinesNegCount?)
                 isShown: false,
                 isMine: false,
                 isMarked: true
             }
+
+            // addRandomMine(gBoard)
+
             // manually place 2 mines
             if (i === 0 && j === 0 || i === 2 && j === 2) {
 
                 cell.isMine = true
-                // cell.isShown = true
             }
 
             // // randomly place 2 mines
+            // for (var i = 0; i < 2; i++) {
+            //     if (cell.id === getRandomId()) {
+            //         cell.isMine = true
+            //     }
+            // }
+
             // if (i === 0 && j === 0 || i === 2 && j === 2) {
 
             //     cell.isMine = true
@@ -138,7 +147,7 @@ function renderBoard(board) {
             }
 
 
-            strHTML += `<td onclick="cellClicked(this, ${i}, ${j})" class="cell cellID-${i}-${j}" ></td>`
+            strHTML += `<td onclick="cellClicked(this, ${i}, ${j})" class="cell cellId-${i}-${j}" ></td>`
 
         }
         strHTML += '</tr>'
@@ -210,22 +219,97 @@ function cellClicked(elCell, rowIdx, colIdx) {
     console.log('gBoard:', gBoard)
 }
 
-console.log('getRandomId(gBoard, randomTimes = 2)', getRandomId());
 
-function getRandomId() {
-    var ids = []
-    for (var i = 101; i < 117; i++) {
-        var id = i
-        ids.push(id)
+// console.log('addRandomMine(gBoard)', addRandomMine(gBoard));
+
+// console.log('gBoard[0])[0]',gBoard[0][0])
+
+function addRandomMine(board) {
+    var emptyCells = []
+    for (var i = 0; i < board.length; i++) {
+        // console.log('i', i);
+        for (var j = 0; j < board[0].length; j++) {
+
+
+            if (board[i][j].isMine === false) {
+                var currCell = { i, j }
+                emptyCells.push(currCell);
+            }
+        }
     }
-    
-    var rndIdx = getRandomInt(0, ids.length)
-    var num = ids[rndIdx];
-    ids.splice(rndIdx, 1);
 
-    return num
+    console.log('emptyCells', emptyCells);
 
+    // Model
+    var randomCell = emptyCells[getRandomInt(0, emptyCells.length)];
+    // console.log('randomCell', randomCell);
+    gBoard[randomCell.i][randomCell.j].isMine = true
+
+    // DOM
+
+    // renderCell(randomCell, MINE_IMG)
+
+    // console.log('random ball', randomCell);
 }
+
+function renderCell(location, value) {
+    var cellSelector = '.' + getClassName(location)
+    var elCell = document.querySelector(cellSelector);
+    elCell.innerHTML = value;
+}
+
+
+// cellId-${i}-${j}"
+
+
+// Returns the class name for a specific cell
+
+function getClassName(location) {
+    var cellClass = 'cellId-' + location.i + '-' + location.j;
+    return cellClass
+}
+
+
+
+function gShownCount() {
+
+    gShownCount = 0
+
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isShown) {
+                gShownCount++
+            }
+        }
+    }
+
+    console.log('shownCount', gShownCount);
+    console.log('gGame', gGame);
+
+    return gShownCount
+}
+
+function startGame() {
+
+    if (gGame.shownCount > 0) return startTimer()
+}
+
+// console.log('getRandomId(gBoard, randomTimes = 2)', getRandomId());
+
+// function getRandomId() {
+//     var ids = []
+//     for (var i = 101; i < 117; i++) {
+//         var id = i
+//         ids.push(id)
+//     }
+
+//     var rndIdx = getRandomInt(0, ids.length)
+//     var num = ids[rndIdx];
+//     ids.splice(rndIdx, 1);
+
+//     return num
+
+// }
 
 
 
