@@ -2,9 +2,11 @@
 
 const MINE = '💣'
 const EMPTY = ' '
+const FLAG = '🚩'
 
 
 var gShownCount
+var gMarkedCount
 var gBoard = []
 var gGame = {
     isOn: true,
@@ -215,7 +217,8 @@ function cellClicked(elCell, rowIdx, colIdx) {
     shownCount()
     if (gGame.shownCount === 1) {
         startTimer()
-    } else if (gGame.shownCount === 16) {
+    } 
+    if (gGame.shownCount === 16) {
         endTimer()
     }
 
@@ -305,6 +308,26 @@ function shownCount() {
 }
 
 
+function markedCount() {
+
+    gMarkedCount = 0
+
+    for (var i = 0; i < gBoard.length; i++) {
+        for (var j = 0; j < gBoard[0].length; j++) {
+            if (gBoard[i][j].isMarked) {
+                gMarkedCount++
+            }
+        }
+    }
+    
+
+    gGame.markedCount = gMarkedCount
+    // console.log('gGame', gGame);
+
+    return gGame.markedCount
+}
+
+
 function startTimer() {
     var elMinutes = document.querySelector('.minutes');
     var elSeconds = document.querySelector('.seconds');
@@ -321,6 +344,12 @@ function endTimer() {
     clearInterval(gIntervalID);
 }
 
+
+// const noContext = document.getElementById('noContextMenu');
+
+// noContext.addEventListener('contextmenu', e => {
+//   e.preventDefault();
+// });
 
 // console.log('getRandomId(gBoard, randomTimes = 2)', getRandomId());
 
