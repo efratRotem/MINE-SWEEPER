@@ -12,7 +12,8 @@ var gGame = {
     markedCount: 0,
     secsPassed: 0
 }
-var gTimeDiff
+var gStartTime
+var gIntervalID
 
 
 // console.log('gGame', gGame);
@@ -204,11 +205,20 @@ function mineCountAround(gBoard, rowIdx, colIdx) {
     return mineCount
 }
 
+
 function cellClicked(elCell, rowIdx, colIdx) {
 
     var cell = gBoard[rowIdx][colIdx]
 
     cell.isShown = true
+    shownCount()
+    if (gGame.shownCount === 1) {
+        startTimer()
+    } else if(gGame.shownCount === 16){
+        endTimer()
+    }
+
+    console.log('gGame', gGame);
 
     if (!cell.isMine) {
         elCell.innerText = cell.minesAroundCount
@@ -271,7 +281,7 @@ function getClassName(location) {
 
 
 
-function gShownCount() {
+function shownCount() {
 
     gShownCount = 0
 
@@ -284,15 +294,30 @@ function gShownCount() {
     }
 
     console.log('shownCount', gShownCount);
-    console.log('gGame', gGame);
 
-    return gShownCount
+    gGame.shownCount = gShownCount
+    // console.log('gGame', gGame);
+
+    return gGame.shownCount
 }
 
-function startGame() {
 
-    if (gGame.shownCount > 0) return startTimer()
-}
+function startTimer() {
+    var elMinutes = document.querySelector('.minutes');
+    var elSeconds = document.querySelector('.seconds');
+
+    gStartTime = Date.now()
+    gIntervalID = setInterval(function () {
+
+        var timeDiff = Date.now() - gStartTime
+      elSeconds.innerText = timeDiff;
+    }, 10);
+  }
+
+  function endTimer() {
+    clearInterval(gIntervalID);
+  }
+
 
 // console.log('getRandomId(gBoard, randomTimes = 2)', getRandomId());
 
