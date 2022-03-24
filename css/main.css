@@ -1,0 +1,17 @@
+
+.cell {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    font-size: 1.5em;
+    border: 2px solid #fff;
+  }
+
+  table {
+      background: gray;
+      
+    }
+    
+    /* .cellID-3-0 {
+        background: red;
+  } */
