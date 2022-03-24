@@ -14,6 +14,10 @@ var gGame = {
 }
 var gStartTime
 var gIntervalID
+var gLevel = [ {
+
+}
+]
 
 
 // console.log('gGame', gGame);
@@ -51,14 +55,11 @@ function buildBoard(ROWS = 4, COLS = 4) {
                 isMine: false,
                 isMarked: true
             }
-
-            // addRandomMine(gBoard)
-
             // manually place 2 mines
-            if (i === 0 && j === 0 || i === 2 && j === 2) {
+            // if (i === 0 && j === 0 || i === 2 && j === 2) {
 
-                cell.isMine = true
-            }
+            //     cell.isMine = true
+            // }
 
             // // randomly place 2 mines
             // for (var i = 0; i < 2; i++) {
@@ -74,12 +75,12 @@ function buildBoard(ROWS = 4, COLS = 4) {
             row.push(cell)
         }
         board.push(row)
-
-
         //    board.charAt(getRandomInt(0, board.length))
     }
 
-
+    for (var i = 0; i < 2; i++) {
+        addRandomMine(board)
+    }
     // console.log('board.charAt(getRandomInt(0, board.length))', getRandomInt(0, board.length ** 2))
     // console.log(' board.length', board.length);
     console.log('board', board);
@@ -214,7 +215,7 @@ function cellClicked(elCell, rowIdx, colIdx) {
     shownCount()
     if (gGame.shownCount === 1) {
         startTimer()
-    } else if(gGame.shownCount === 16){
+    } else if (gGame.shownCount === 16) {
         endTimer()
     }
 
@@ -253,13 +254,15 @@ function addRandomMine(board) {
     // Model
     var randomCell = emptyCells[getRandomInt(0, emptyCells.length)];
     // console.log('randomCell', randomCell);
-    gBoard[randomCell.i][randomCell.j].isMine = true
+    board[randomCell.i][randomCell.j].isMine = true
 
     // DOM
 
     // renderCell(randomCell, MINE_IMG)
 
-    // console.log('random ball', randomCell);
+    console.log('randomCell', randomCell);
+    console.log('randomCell.i', randomCell.i);
+    console.log('board', board);
 }
 
 function renderCell(location, value) {
@@ -310,13 +313,13 @@ function startTimer() {
     gIntervalID = setInterval(function () {
 
         var timeDiff = Date.now() - gStartTime
-      elSeconds.innerText = timeDiff;
+        elSeconds.innerText = timeDiff;
     }, 10);
-  }
+}
 
-  function endTimer() {
+function endTimer() {
     clearInterval(gIntervalID);
-  }
+}
 
 
 // console.log('getRandomId(gBoard, randomTimes = 2)', getRandomId());
