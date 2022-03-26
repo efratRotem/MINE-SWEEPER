@@ -1,7 +1,6 @@
 body {
     text-align: center;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
-
 }
 
 .timer {
@@ -16,14 +15,16 @@ body {
     border: 2px solid #fff;
 }
 
-
-
 table {
       background: gray;
       margin: auto;
-      
 }
     
+.test {
+    background-color: yellow;
+    margin: 30px;
+}
+
     /* .cellID-3-0 {
         background: red;
   } */
